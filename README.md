@@ -29,17 +29,29 @@ I figured I could do the same thing using block characters for bar charts.
 
 ### Usage
 
-* Create data file with two columns either comma or space separated.
-  The first column is your labels, the second column is a numeric data
+Create a `termgraph` on the command line or through the API.
 
-* python termgraph.py [datafile]
+* Command line
+
+  - Create data file with two columns either comma or space separated. The first column is your labels, the second column is a numeric data
+
+  - Run thepython termgraph.py [datafile]
+
+* `TermGraph` API
+  
+   Create a `TermGraph` object by specifying the labels, data and (optionally) the graph width:
+   
+    `termgraph = TermGraph(labels = ['a', 'b'], data = [1, 2], width = width)`
+
+   Call the `render()` method to output the graph: 
+   
+    `termgraph.render()`
 
 
 ### TODO
 I may or may not ever get around to these TODOs but a few ideas to take it further
 
 * Add switch for vertical bar charts
-* Add options and flags for width
 * Add options for different colors
 * Stacked Bar Charts
 * Multiple series (side-by-side)

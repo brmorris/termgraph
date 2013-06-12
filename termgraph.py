@@ -8,23 +8,54 @@
 # http://mkaz.com/
 
 
-import argparse
-import sys
+import argparse, sys
 
 #TODO: change tick character
-tick = '▇'
-sm_tick = '|'
+    
+class TermGraph():
+        
+        def __init__(self, width=100, tick='▇', sm_tick = '|', labels = None, data = None ):
+            # TODO verify data 
 
-# sample bar chart data
-#labels = ['2007', '2008', '2009', '2010', '2011']
-#data = [183.32, 231.23, 16.43, 50.21, 508.97]
+            if len(labels) != len(data):
+                print "Error, invalid input data length"
+            
+            self.tick = tick
+            self.sm_tick = sm_tick
+            self.labels = labels
+            self.width = width
+            self.data = data
+            self.length = len(self.data)
+            self.step = self._get_step();
+             
+        def _get_step(self):
+            # step is width divided by the largest value
+            max = 0
+            for i in xrange(self.length):
+                if self.data[i] > max:
+                    max = self.data[i]
+            return max / self.width
 
+        def render(self):
+            for i in xrange(self.length):
+                self._print_blocks(self.labels[i], self.data[i], self.step)
+            print
+
+        def _print_blocks(self, label, count, step):
+            #TODO: add flag to hide data labels
+            blocks = int(count / step)
+            print "{}: ".format(label),
+            if count < step:
+                sys.stdout.write(self.sm_tick)
+            else:
+                for i in xrange(blocks):
+                    sys.stdout.write(self.tick)
+
+            print "{:>7.2f}".format(count)
+    
 
 def main():
-
-    # determine type of graph
-    
-    # read data
+    args = init()
     if (args['filename']):
         labels, data = read_data(args['filename'])
     else:
@@ -32,40 +63,10 @@ def main():
         print ">> Error: No data file specified"
         sys.exit(1)
 
-    # verify data
-    m = len(labels)
-    if m != len(data):
-        print ">> Error: Label and data array sizes don't match"
-        sys.exit(1)
+    termgraph = TermGraph(width = args['width'], labels = labels, data = data)
+    termgraph.render()
 
-    # massage data
-    ## normalize for graph
-    max = 0
-    for i in xrange(m):
-        if data[i] > max:
-            max = data[i]
-
-    step = max / args['width']
-    # display graph
-    for i in xrange(m):
-        print_blocks(labels[i], data[i], step)
-
-    print
-
-
-def print_blocks(label, count, step):
-    #TODO: add flag to hide data labels
-    blocks = int(count / step)
-    print "{}: ".format(label),
-    if count < step:
-        sys.stdout.write(sm_tick)
-    else:
-        for i in xrange(blocks):
-            sys.stdout.write(tick)
-
-    print "{:>7.2f}".format(count)
-
-
+ 
 def init():
     parser = argparse.ArgumentParser(description='draw basic graphs on terminal')
     parser.add_argument('filename', nargs=1, help='data file name (comma or space separated)')
@@ -77,11 +78,6 @@ def init():
 
 
 def read_data(filename):
-    #TODO: add verbose flag
-    print "------------------------------------"
-    print "Reading data from", filename
-    print "------------------------------------\n"
-
     labels = []
     data = []
 
@@ -103,8 +99,4 @@ def read_data(filename):
 
 
 if __name__ == "__main__":
-    args = init()
     main()
-
-
-
