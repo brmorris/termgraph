@@ -31,13 +31,13 @@ class TermGraph():
         def _get_step(self):
             # step is width divided by the largest value
             max = 0
-            for i in xrange(self.length):
+            for i in range(self.length):
                 if self.data[i] > max:
                     max = self.data[i]
             return max / self.width
 
         def render(self):
-            for i in xrange(self.length):
+            for i in range(self.length):
                 self._print_blocks(self.labels[i], self.data[i], self.step)
             print
 
@@ -48,7 +48,7 @@ class TermGraph():
             if count < step:
                 sys.stdout.write(self.sm_tick)
             else:
-                for i in xrange(blocks):
+                for i in range(blocks):
                     sys.stdout.write(self.tick)
 
             print("{:>7.2f}".format(count))
