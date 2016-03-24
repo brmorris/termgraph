@@ -18,7 +18,7 @@ class TermGraph():
             # TODO verify data 
 
             if len(labels) != len(data):
-                print "Error, invalid input data length"
+                print("Error, invalid input data length")
             
             self.tick = tick
             self.sm_tick = sm_tick
@@ -31,27 +31,27 @@ class TermGraph():
         def _get_step(self):
             # step is width divided by the largest value
             max = 0
-            for i in xrange(self.length):
+            for i in range(self.length):
                 if self.data[i] > max:
                     max = self.data[i]
             return max / self.width
 
         def render(self):
-            for i in xrange(self.length):
+            for i in range(self.length):
                 self._print_blocks(self.labels[i], self.data[i], self.step)
             print
 
         def _print_blocks(self, label, count, step):
             #TODO: add flag to hide data labels
             blocks = int(count / step)
-            print "{}: ".format(label),
+            print("{}: ".format(label), )
             if count < step:
                 sys.stdout.write(self.sm_tick)
             else:
-                for i in xrange(blocks):
+                for i in range(blocks):
                     sys.stdout.write(self.tick)
 
-            print "{:>7.2f}".format(count)
+            print("{:>7.2f}".format(count))
     
 
 def main():
@@ -60,7 +60,7 @@ def main():
         labels, data = read_data(args['filename'])
     else:
         # shouldn't happen since argparse covers empty case
-        print ">> Error: No data file specified"
+        print(">> Error: No data file specified")
         sys.exit(1)
 
     termgraph = TermGraph(width = args['width'], labels = labels, data = data)
